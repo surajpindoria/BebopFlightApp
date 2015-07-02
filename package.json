@@ -1,0 +1,25 @@
+{
+  "name": "bebop-flight-app",
+  "version": "0.0.1",
+  "description": "Replacement flight app for the Parrot Bebop Drone",
+  "main": "index.js",
+  "dependencies": {
+    "cylon-bebop": "^0.2.0",
+    "cylon-joystick": "^0.17.0",
+    "node-bebop": "^0.2.0",
+    "cylon": "^1.1.0"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "Parrot",
+    "Bebop",
+    "Drone",
+    "Flight",
+    "Control"
+  ],
+  "author": "Suraj Pindoria <suraj.pindoria@yahoo.com>",
+  "license": ""
+}
