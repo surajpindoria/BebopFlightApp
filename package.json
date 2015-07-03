@@ -1,10 +1,13 @@
 {
   "name": "bebop-flight-app",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "Replacement flight app for the Parrot Bebop Drone",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/surajpindoria/BebopFlightApp.git"
+  },
   "main": "index.js",
   "dependencies": {
-    "cylon-bebop": "^0.2.0",
     "cylon-joystick": "^0.17.0",
     "node-bebop": "^0.2.0",
     "cylon": "^1.1.0"

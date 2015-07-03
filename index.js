@@ -2,15 +2,24 @@
 // Based on example app using Cylon.js to communicate with drone
 
 var cylon = require("cylon");
+var bebop = require("node-bebop");
+
+var drone = bebop.createClient();
+
+// Sensitivity controls for left/right sticks
+var stickSensitivity = 0.2;
+var maxSpeed = 0.5;
+
+drone.connect(function() {
+    cylon.start();
+});
 
 cylon.robot({
     connections: {
-        joystick: { adaptor: "joystick" },
-        bebop:  { adaptor: 'bebop' }
+        joystick: { adaptor: "joystick" }
     },
     devices: {
-        controller: { driver: "dualshock-3", connection: "joystick" },
-        drone:      { driver: "bebop", connection: "bebop" }
+        controller: { driver: "dualshock-3", connection: "joystick" }
     },
     work: function() {
         var that = this,
@@ -19,15 +28,15 @@ cylon.robot({
 
         // functions for each button press
         that.controller.on("square:press", function() {
-            that.drone.takeOff();
+            drone.takeOff();
         });
 
         that.controller.on("triangle:press", function() {
-            that.drone.stop();
+            drone.stop();
         });
 
         that.controller.on("x:press", function() {
-            that.drone.land();
+            drone.land();
         });
 
         that.controller.on("right_x:move", function(data) {
@@ -49,50 +58,68 @@ cylon.robot({
         // set drone controls for the left stick
         setInterval(function() {
             var pair = leftStick;
+            var curPos = 0;
 
             // move drone forward/backward
-            if (pair.y < 0) {
-                that.drone.forward(validatePitch(pair.y));
-            } else if (pair.y > 0) {
-                that.drone.backward(validatePitch(pair.y));
+            if (pair.y < -(stickSensitivity)) {
+                curPos = pair.y + stickSensitivity;
+
+                drone.forward(validatePitch(curPos <= -(maxSpeed) ? -(maxSpeed) : curPos));
+            } else if (pair.y > stickSensitivity) {
+                curPos = pair.y - stickSensitivity;
+
+                drone.backward(validatePitch(curPos >= maxSpeed ? maxSpeed : curPos));
             }
 
             // move drone left/right
-            if (pair.x > 0) {
-                that.drone.right(validatePitch(pair.x));
-            } else if (pair.x < 0) {
-                that.drone.left(validatePitch(pair.x));
+            if (pair.x < -(stickSensitivity)) {
+                curPos = pair.x + stickSensitivity;
+
+                drone.left(validatePitch(curPos <= -(maxSpeed) ? -(maxSpeed) : curPos));
+            } else if (pair.x > stickSensitivity) {
+                curPos = pair.x - stickSensitivity;
+
+                drone.right(validatePitch(curPos >= maxSpeed ? maxSpeed : curPos));
             }
         }, 0);
 
         // set drone controls for the right stick
         setInterval(function() {
             var pair = rightStick;
+            var curPos = 0;
 
             // move dronw up/down
-            if (pair.y < 0) {
-                that.drone.up(validatePitch(pair.y));
-            } else if (pair.y > 0) {
-                that.drone.down(validatePitch(pair.y));
+            if (pair.y < -(stickSensitivity)) {
+                curPos = pair.y + stickSensitivity;
+
+                drone.up(validatePitch(curPos <= -(maxSpeed) ? -(maxSpeed) : curPos));
+            } else if (pair.y > stickSensitivity) {
+                curPos = pair.y - stickSensitivity;
+
+                drone.down(validatePitch(curPos <= maxSpeed ? maxSpeed : curPos));
             }
 
             // move drone clockwise/counterclockwise
-            if (pair.x > 0) {
-                that.drone.clockwise(validatePitch(pair.x));
-            } else if (pair.x < 0) {
-                that.drone.counterClockwise(validatePitch(pair.x));
+            if (pair.x < -(stickSensitivity)) {
+                curPos = pair.x + stickSensitivity;
+
+                drone.counterClockwise(validatePitch(curPos >= -(maxSpeed) ? -(maxSpeed) : curPos));
+            } else if (pair.x > stickSensitivity) {
+                curPos = pair.x - stickSensitivity;
+
+                drone.clockwise(validatePitch(curPos <= maxSpeed ? maxSpeed : curPos));
             }
         }, 0);
 
         setInterval(function() {
-            that.drone.stop();
+            drone.stop();
         }, 10);
     }
-}).start();
+});
 
 function validatePitch(data) {
     var value = Math.abs(data);
-    if (value >= 0.1) {
+    if (value > 0.0) {
         if (value <= 1.0) {
             return Math.round(value * 100);
         } else {
