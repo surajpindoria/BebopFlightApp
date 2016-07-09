@@ -8,9 +8,9 @@
   },
   "main": "index.js",
   "dependencies": {
-    "cylon-joystick": "^0.17.0",
-    "node-bebop": "^0.2.0",
-    "cylon": "^1.1.0"
+    "cylon": "^1.3.0",
+    "cylon-joystick": "^0.22.0",
+    "node-bebop": "^0.6.0"
   },
   "devDependencies": {},
   "scripts": {
