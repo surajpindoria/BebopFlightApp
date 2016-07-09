@@ -1,6 +1,6 @@
 {
   "name": "bebop-flight-app",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "Replacement flight app for the Parrot Bebop Drone",
   "repository": {
     "type": "git",
