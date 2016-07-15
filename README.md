@@ -1,4 +1,4 @@
-# Bebop Flight App
+# Bebop Flight App [![bitHound Dependencies](https://www.bithound.io/github/surajpindoria/BebopFlightApp/badges/dependencies.svg)](https://www.bithound.io/github/surajpindoria/BebopFlightApp/master/dependencies/npm)
 
 Trying to create a replacement flight app for the Parrot Bebop drone.
 
